@@ -148,6 +148,7 @@ struct Variable {
                     v2 = v * Scalar(src_size);
                 } else {
                     assert(v.size() == src_size);
+                    std::cerr << "accum(): hsum_async():" << src_size << " -> "  << size << std::endl;
                     v2 = hsum_async(v);
                 }
 
@@ -1174,12 +1175,13 @@ template <typename Value> const char *ad_graphviz() {
         const char *color = nullptr;
         bool labeled = false;
         if (label_without_prefix && strlen(label_without_prefix) != 0) {
-            if (v->custom_label)
+            if (v->custom_label) {
                 buffer.put("Label: \\\"");
+                labeled = true;
+            }
             print_escape(label_without_prefix);
             if (v->custom_label)
                 buffer.put("\\\"");
-            labeled = true;
         }
 
         if (v->next_rev == 0)
